@@ -2,19 +2,49 @@
   <b-container>
     <div class="inner">
       <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
-      <b-form-textarea id="textarea" v-model="text" rows="3" max-rows="6"></b-form-textarea>
       <b-btn color="info" @click="startSpeech">{{ recognitionText }}</b-btn>
+      <div id="overlay" v-show="showContent" v-on:click="closeModal">
+        <div id="modal">
+          <p>Select the Kanji</p>
+          <div class="b-container modal-word-container">
+            <div class="b-card modal-word-card" v-for="kanji in kanjis[textarray[card_id]]" v-bind:key="kanji.id" v-on:click="selectKanji(kanji)">
+              <div class="modal-card-content">
+                <p>
+                  {{ kanji }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <p><b-btn color="info" v-on:click="closeModal">close</b-btn></p>
+        </div>
+      </div>
+      <div class="b-container word-container">
+        <div class="b-card word-card" v-for="(word,index) in final_textarray" v-bind:key="word.id" v-on:click="openModal(index)">
+          <div class="card-content">
+            <p>
+              {{ word }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <p v-show="!textarray.length==0">Please tap each characters and select KANJI</p>
     </div>
   </b-container>
 </template>
 
 <script>
+import kanjis from '@/assets/json/kanji.json';
   export default {
     data: function () {
       return {
+        kanjis: kanjis,
         text: "",
         recognition: new webkitSpeechRecognition(),
-        recognitionText: "音声入力開始"
+        recognitionText: "音声入力開始",
+        textarray: [],
+        final_textarray: [],
+        showContent: false,
+        card_id: 0,
       };
     },
     created: function () {
@@ -26,7 +56,13 @@
       };
       this.recognition.onresult = event => {
         if (event.results.length > 0) {
+          this.textarray=[];
+          this.final_textarray=[];
           this.text = event.results[0][0].transcript;
+          for (const word of this.text) {
+            this.textarray.push(word);
+            this.final_textarray.push(word);
+          }
         }
       };
     },
@@ -34,6 +70,16 @@
       startSpeech: function () {
         this.recognition.lang = 'ja';
         this.recognition.start();
+      },
+      openModal: function(e){
+        this.showContent = true;
+        this.card_id = e;
+      },
+      closeModal: function(){
+        this.showContent = false;
+      },
+      selectKanji: function(e) {
+        this.final_textarray[this.card_id] = e;
       }
     }
   }
@@ -48,5 +94,81 @@
 
   img {
     width: 100%;
+  }
+
+  .word-container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .word-card {
+    width: 64px;
+    height: 64px;
+    margin: .5rem;
+    border: solid 1px black;
+    position: relative;
+  }
+  .card-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 80%;
+    height: 3.2rem;
+  }
+  .card-content p{
+    font-size: 34px;
+  }
+
+  .modal-word-container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .modal-word-card {
+    width: 64px;
+    height: 64px;
+    margin: .5rem;
+    border: solid 1px black;
+    position: relative;
+  }
+  .modal-card-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 80%;
+    height: 3.2rem;
+  }
+  .modal-card-content p{
+    font-size: 34px;
+  }
+
+  #overlay{
+    /*　要素を重ねた時の順番　*/
+    z-index:1;
+
+    /*　画面全体を覆う設定　*/
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,0.5);
+
+    /*　画面の中央に要素を表示させる設定　*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #modal{
+    z-index:2;
+    width:80%;
+    padding: 1em;
+    background:#fff;
   }
 </style>
