@@ -2,7 +2,7 @@
   <b-container>
     <div class="inner">
       <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
-      <b-btn color="info" @click="startSpeech">{{ recognitionText }}</b-btn>
+      <b-btn color="info" @click="startSpeech" style="margin:10px">{{ recognitionText }}</b-btn>
       <div id="overlay" v-show="showContent" v-on:click="closeModal">
         <div id="modal">
           <p>Select the Kanji</p>
@@ -28,6 +28,9 @@
         </div>
       </div>
       <p v-show="!textarray.length==0">Please tap each characters and select KANJI</p>
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
     </div>
   </b-container>
 </template>
