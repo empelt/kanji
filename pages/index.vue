@@ -37,6 +37,8 @@
 
 <script>
 import kanjis from '@/assets/json/kanji.json';
+import axios from 'axios'
+
   export default {
     data: function () {
       return {
@@ -62,10 +64,22 @@ import kanjis from '@/assets/json/kanji.json';
           this.textarray=[];
           this.final_textarray=[];
           this.text = event.results[0][0].transcript;
-          for (const word of this.text) {
-            this.textarray.push(word);
-            this.final_textarray.push(word);
-          }
+          axios.post('https://labs.goo.ne.jp/api/hiragana',{
+            "app_id": "547f4b5519594402d36cf66174ba354e18404fd4c1a6c05882ec745436916a1b",
+            "request_id": "record003",
+            "sentence": event.results[0][0].transcript,
+            "output_type": "hiragana"
+          }).then(response => {
+              for (const word of response.data["converted"].replace(/\s+/g, "")) {
+                this.textarray.push(word);
+                this.final_textarray.push(word);
+              }
+              this.text = response.data["converted"];
+            })
+          // for (const word of this.text) {
+          //   this.textarray.push(word);
+          //   this.final_textarray.push(word);
+          // }
         }
       };
     },
@@ -170,6 +184,7 @@ import kanjis from '@/assets/json/kanji.json';
   }
   #modal{
     z-index:2;
+    max-width: 600px;
     width:80%;
     padding: 1em;
     background:#fff;
