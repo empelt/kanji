@@ -239,7 +239,7 @@ img {
 }
 #modal {
   z-index: 2;
-  width: 340px;
+  max-width: 600px;
   width: 80%;
   padding: 1em;
   background: #fff;
