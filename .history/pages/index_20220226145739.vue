@@ -122,7 +122,6 @@ export default {
         })
         .then(kanjires => {
           var kanjis = kanjires["data"];
-          var means = [];
           kanjis.forEach((kanji, index) => {
             axios
               .get(
@@ -130,8 +129,7 @@ export default {
                   String(kanji["id"])
               )
               .then(meanres => {
-                console.log(meanres['data'])
-                if (meanres["data"]) {
+                if (meanres["data"][0]['mean']) {
                   this.means.push(meanres["data"][0]["mean"])
                   // kanjis[index]['mean'] = (meanres["data"][0]["mean"]);
                   // this.kanjis[index]['mean'] = (meanres["data"][0]["mean"]);
@@ -239,7 +237,7 @@ img {
 }
 #modal {
   z-index: 2;
-  width: 340px;
+  max-width: 600px;
   width: 80%;
   padding: 1em;
   background: #fff;

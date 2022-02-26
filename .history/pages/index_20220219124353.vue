@@ -2,22 +2,20 @@
   <b-container>
     <div class="inner">
       <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
-      <b-btn color="info" @click="startSpeech" style="margin:10px">
-        {{
-        recognitionText
-        }}
-      </b-btn>
+      <b-btn color="info" @click="startSpeech" style="margin:10px">{{ recognitionText }}</b-btn>
       <div id="overlay" v-show="showContent" v-on:click="closeModal">
         <div id="modal">
           <p>Select the Kanji</p>
           <div class="b-container modal-word-container">
-            <div v-for="(kanji, index) in kanjis" v-bind:key="kanji.id" v-on:click="selectKanji(kanji)">
-              <div class="b-card modal-word-card">
-                <div class="modal-card-content">
-                  <p>{{ kanji["kanji"] }}</p>
-                </div>
+            <div
+              class="b-card modal-word-card"
+              v-for="kanji in kanjis"
+              v-bind:key="kanji.id"
+              v-on:click="selectKanji(kanji)"
+            >
+              <div class="modal-card-content">
+                <p>{{ kanji['kanji'] }}</p>
               </div>
-              <p class="kanji-mean">{{ means[index] }}</p>
             </div>
           </div>
           <p>
@@ -28,16 +26,16 @@
       <div class="b-container word-container">
         <div
           class="b-card word-card"
-          v-for="(word, index) in final_textarray"
+          v-for="(word,index) in final_textarray"
           v-bind:key="word.id"
           v-on:click="openModal(index)"
         >
           <div class="card-content">
-            <p>{{ word["kanji"] ? word["kanji"] : word }}</p>
+            <p>{{ word['kanji'] ? word['kanji'] : word }}</p>
           </div>
         </div>
       </div>
-      <p v-show="!textarray.length == 0">Please tap each characters and select KANJI</p>
+      <p v-show="!textarray.length==0">Please tap each characters and select KANJI</p>
       <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
       <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
       <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
@@ -60,7 +58,6 @@ export default {
   data: function() {
     return {
       kanjis: null,
-      means: [],
       text: "",
       recognition: new webkitSpeechRecognition(),
       recognitionText: "音声入力開始",
@@ -112,39 +109,13 @@ export default {
     openModal: function(e) {
       this.showContent = true;
       this.card_id = e;
-      this.means = []
-      console.log(this.final_textarray[e]);
       axios
         .post("http://localhost:4200/kanjis/findAllByKana", {
-          kana: this.final_textarray[e]["katakana"]
-            ? this.final_textarray[e]["katakana"]
-            : hiraToKana(this.final_textarray[e])
+          kana: hiraToKana(this.final_textarray[e])
         })
-        .then(kanjires => {
-          var kanjis = kanjires["data"];
-          var means = [];
-          kanjis.forEach((kanji, index) => {
-            axios
-              .get(
-                "http://localhost:4200/means/findAllByKanjiId/" +
-                  String(kanji["id"])
-              )
-              .then(meanres => {
-                console.log(meanres['data'])
-                if (meanres["data"]) {
-                  this.means.push(meanres["data"][0]["mean"])
-                  // kanjis[index]['mean'] = (meanres["data"][0]["mean"]);
-                  // this.kanjis[index]['mean'] = (meanres["data"][0]["mean"]);
-                }
-                else {
-                  this.means.push(' ')
-                  // kanjis[index]['mean'] = ''
-                }
-                // this.kanjis = kanjis;
-              });
-          });
-          this.kanjis = kanjis;
-          console.log(kanjis);
+        .then(response => {
+          this.kanjis = response['data']
+          console.log(response)
         });
     },
     closeModal: function() {
@@ -239,15 +210,9 @@ img {
 }
 #modal {
   z-index: 2;
-  width: 340px;
+  max-width: 600px;
   width: 80%;
   padding: 1em;
   background: #fff;
-}
-
-.kanji-mean {
-  max-width: 65px;
-  overflow-wrap: anywhere;
-  margin: 0 auto;
 }
 </style>

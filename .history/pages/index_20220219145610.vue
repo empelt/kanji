@@ -11,13 +11,13 @@
         <div id="modal">
           <p>Select the Kanji</p>
           <div class="b-container modal-word-container">
-            <div v-for="(kanji, index) in kanjis" v-bind:key="kanji.id" v-on:click="selectKanji(kanji)">
+            <div v-for="kanji in kanjis" v-bind:key="kanji.id" v-on:click="selectKanji(kanji)">
               <div class="b-card modal-word-card">
                 <div class="modal-card-content">
                   <p>{{ kanji["kanji"] }}</p>
                 </div>
               </div>
-              <p class="kanji-mean">{{ means[index] }}</p>
+              <p class="kanji-mean">asdfasdf,asdfasd,sdfdfdf</p>
             </div>
           </div>
           <p>
@@ -60,7 +60,7 @@ export default {
   data: function() {
     return {
       kanjis: null,
-      means: [],
+      means: null,
       text: "",
       recognition: new webkitSpeechRecognition(),
       recognitionText: "音声入力開始",
@@ -112,7 +112,6 @@ export default {
     openModal: function(e) {
       this.showContent = true;
       this.card_id = e;
-      this.means = []
       console.log(this.final_textarray[e]);
       axios
         .post("http://localhost:4200/kanjis/findAllByKana", {
@@ -123,28 +122,20 @@ export default {
         .then(kanjires => {
           var kanjis = kanjires["data"];
           var means = [];
-          kanjis.forEach((kanji, index) => {
+          kanjis.forEach(kanji => {
             axios
               .get(
                 "http://localhost:4200/means/findAllByKanjiId/" +
                   String(kanji["id"])
               )
               .then(meanres => {
-                console.log(meanres['data'])
-                if (meanres["data"]) {
-                  this.means.push(meanres["data"][0]["mean"])
-                  // kanjis[index]['mean'] = (meanres["data"][0]["mean"]);
-                  // this.kanjis[index]['mean'] = (meanres["data"][0]["mean"]);
-                }
-                else {
-                  this.means.push(' ')
-                  // kanjis[index]['mean'] = ''
-                }
-                // this.kanjis = kanjis;
+                if (meanres["data"]) means.push(meanres["data"][0]["mean"]);
+                else means.push('')
               });
           });
           this.kanjis = kanjis;
-          console.log(kanjis);
+          this.means = means;
+          console.log(means);
         });
     },
     closeModal: function() {
@@ -239,7 +230,7 @@ img {
 }
 #modal {
   z-index: 2;
-  width: 340px;
+  max-width: 600px;
   width: 80%;
   padding: 1em;
   background: #fff;
