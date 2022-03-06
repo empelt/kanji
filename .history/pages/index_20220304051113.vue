@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <div class="inner">
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
       <b-btn color="info" @click="startSpeech" style="margin:10px">
         {{
         recognitionText
@@ -31,7 +31,6 @@
           v-for="(word, index) in final_textarray"
           v-bind:key="word.id"
           v-on:click="openModal(index)"
-          v-bind:class="{ small: is_smallarray[index] }"
         >
           <div class="card-content">
             <p>{{ word["kanji"] ? word["kanji"] : word }}</p>
@@ -39,16 +38,15 @@
         </div>
       </div>
       <p v-show="!textarray.length == 0">Please tap each characters and select KANJI</p>
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
     </div>
   </b-container>
 </template>
 
 <script>
 import kanjis from "@/assets/json/kanji.json";
-import smalls from "@/assets/json/small.json";
 import axios from "axios";
 
 function hiraToKana(str) {
@@ -67,7 +65,6 @@ export default {
       recognitionText: "音声入力開始",
       textarray: [],
       final_textarray: [],
-      is_smallarray: [],
       showContent: false,
       card_id: 0
     };
@@ -83,7 +80,6 @@ export default {
       if (event.results.length > 0) {
         this.textarray = [];
         this.final_textarray = [];
-        this.is_smallarray = [];
         this.text = event.results[0][0].transcript;
         axios
           .post("https://labs.goo.ne.jp/api/hiragana", {
@@ -95,15 +91,8 @@ export default {
           })
           .then(response => {
             for (const word of response.data["converted"].replace(/\s+/g, "")) {
-              if (word in smalls) {
-                this.is_smallarray.push(true);
-                this.textarray.push(smalls[word]);
-                this.final_textarray.push(smalls[word]);
-              } else {
-                this.is_smallarray.push(false);
-                this.textarray.push(word);
-                this.final_textarray.push(word);
-              }
+              this.textarray.push(word);
+              this.final_textarray.push(word);
             }
             this.text = response.data["converted"];
           });
@@ -129,7 +118,7 @@ export default {
             : hiraToKana(this.final_textarray[e])
         })
         .then(kanjires => {
-          console.log(kanjires);
+          console.log(kanjires)
           this.kanjis = kanjires["data"];
         });
     },
@@ -159,7 +148,6 @@ img {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  align-items: flex-end;
 }
 .word-card {
   width: 64px;
@@ -167,25 +155,6 @@ img {
   margin: 0.5rem;
   border: solid 1px black;
   position: relative;
-}
-
-.small {
-  width: 32px;
-  height: 32px;
-  margin: 0.5rem;
-  border: solid 1px black;
-  position: relative;
-}
-
-.small .card-content {
-  position: initial;
-  margin: auto;
-  width: 80%;
-  height: 3.2rem;
-}
-
-.small p {
-  font-size: 22px!important;
 }
 .card-content {
   position: absolute;

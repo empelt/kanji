@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <div class="inner">
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
       <b-btn color="info" @click="startSpeech" style="margin:10px">
         {{
         recognitionText
@@ -39,9 +39,9 @@
         </div>
       </div>
       <p v-show="!textarray.length == 0">Please tap each characters and select KANJI</p>
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
     </div>
   </b-container>
 </template>
@@ -159,7 +159,6 @@ img {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  align-items: flex-end;
 }
 .word-card {
   width: 64px;
@@ -177,15 +176,8 @@ img {
   position: relative;
 }
 
-.small .card-content {
-  position: initial;
-  margin: auto;
-  width: 80%;
-  height: 3.2rem;
-}
-
 .small p {
-  font-size: 22px!important;
+  font-size: 22px;
 }
 .card-content {
   position: absolute;

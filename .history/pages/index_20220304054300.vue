@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <div class="inner">
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
       <b-btn color="info" @click="startSpeech" style="margin:10px">
         {{
         recognitionText
@@ -31,7 +31,7 @@
           v-for="(word, index) in final_textarray"
           v-bind:key="word.id"
           v-on:click="openModal(index)"
-          v-bind:class="{ small: is_smallarray[index] }"
+          v-bind:class="{ small: this.is_smallarray[index] }"
         >
           <div class="card-content">
             <p>{{ word["kanji"] ? word["kanji"] : word }}</p>
@@ -39,9 +39,9 @@
         </div>
       </div>
       <p v-show="!textarray.length == 0">Please tap each characters and select KANJI</p>
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
-      <img src="https://mizani.jp/wp-content/uploads/236183029_167300298821957_2736003725744514718_n.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
+      <img src="http://mizani.jp/wp-content/uploads/store-1338629_1920.jpg" />
     </div>
   </b-container>
 </template>
@@ -83,7 +83,6 @@ export default {
       if (event.results.length > 0) {
         this.textarray = [];
         this.final_textarray = [];
-        this.is_smallarray = [];
         this.text = event.results[0][0].transcript;
         axios
           .post("https://labs.goo.ne.jp/api/hiragana", {
@@ -159,7 +158,6 @@ img {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  align-items: flex-end;
 }
 .word-card {
   width: 64px;
@@ -175,17 +173,6 @@ img {
   margin: 0.5rem;
   border: solid 1px black;
   position: relative;
-}
-
-.small .card-content {
-  position: initial;
-  margin: auto;
-  width: 80%;
-  height: 3.2rem;
-}
-
-.small p {
-  font-size: 22px!important;
 }
 .card-content {
   position: absolute;
