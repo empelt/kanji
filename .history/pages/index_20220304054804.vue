@@ -83,7 +83,6 @@ export default {
       if (event.results.length > 0) {
         this.textarray = [];
         this.final_textarray = [];
-        this.is_smallarray = [];
         this.text = event.results[0][0].transcript;
         axios
           .post("https://labs.goo.ne.jp/api/hiragana", {
@@ -105,6 +104,7 @@ export default {
                 this.final_textarray.push(word);
               }
             }
+            console.log(this.is_smallarray)
             this.text = response.data["converted"];
           });
         // for (const word of this.text) {
@@ -159,7 +159,6 @@ img {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  align-items: flex-end;
 }
 .word-card {
   width: 64px;
@@ -175,17 +174,6 @@ img {
   margin: 0.5rem;
   border: solid 1px black;
   position: relative;
-}
-
-.small .card-content {
-  position: initial;
-  margin: auto;
-  width: 80%;
-  height: 3.2rem;
-}
-
-.small p {
-  font-size: 22px!important;
 }
 .card-content {
   position: absolute;

@@ -159,7 +159,6 @@ img {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  align-items: flex-end;
 }
 .word-card {
   width: 64px;
@@ -175,13 +174,6 @@ img {
   margin: 0.5rem;
   border: solid 1px black;
   position: relative;
-}
-
-.small .card-content {
-  position: initial;
-  margin: auto;
-  width: 80%;
-  height: 3.2rem;
 }
 
 .small p {

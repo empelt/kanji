@@ -159,7 +159,6 @@ img {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  align-items: flex-end;
 }
 .word-card {
   width: 64px;
@@ -177,15 +176,8 @@ img {
   position: relative;
 }
 
-.small .card-content {
-  position: initial;
-  margin: auto;
-  width: 80%;
-  height: 3.2rem;
-}
-
 .small p {
-  font-size: 22px!important;
+  font-size: 22px;
 }
 .card-content {
   position: absolute;

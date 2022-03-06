@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <b-navbar toggleable="lg" type="dark">
-      <img src="/logo.png" class="d-inline-block align-top logo" alt="Kitten">
+      <img src="/logo.png" class="d-inline-block align-top" alt="Kitten">
       <b-navbar-brand href="#">Kanji</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -19,8 +19,5 @@
 <style>
   .header {
     background-color: #6200EE;
-  }
-  .logo {
-    width: 93px;
   }
 </style>
