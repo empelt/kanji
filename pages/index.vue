@@ -154,6 +154,9 @@ export default {
 img {
   width: 100%;
 }
+body{
+  background-color:#FEF9F1;
+}
 
 .word-container {
   display: flex;
